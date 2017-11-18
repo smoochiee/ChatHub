@@ -1,40 +1,72 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply plugin: 'com.android.application'
 
-buildscript {
-    repositories {
-        jcenter()
-        mavenLocal()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.3'
-        classpath 'com.google.gms:google-services:3.0.0'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+repositories {
+    mavenLocal()
+    flatDir {
+        dirs 'libs'
     }
 }
 
-allprojects {
-    repositories {
-        jcenter()
-        mavenLocal()
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
+
+    defaultConfig {
+        applicationId "edu.sfsu.csc780.chathub"
+        minSdkVersion 17
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    // dependencies for local unit tests
+    testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
+    testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
+    testCompile "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockito"
+    testCompile "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockito"
+
+
+    compile 'com.android.support:palette-v7:26.0.0-alpha1'
+    compile 'com.android.support:design:26.0.0-alpha1'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'de.hdodenhof:circleimageview:1.3.0'
+    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+
+    // Google
+    compile 'com.google.android.gms:play-services-auth:9.0.0'
+
+
+
+//     Firebase
+    compile 'com.google.firebase:firebase-database:9.0.0'
+    compile 'com.google.firebase:firebase-auth:9.0.0'
+   compile 'com.google.firebase:firebase-messaging:9.0.0'
+    // Firebase UI
+   compile 'com.firebaseui:firebase-ui-database:0.4.0'
+    compile 'com.google.firebase:firebase-storage:9.0.0'
+
+    // Testing dependencies
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support:support-annotations:26.0.0-alpha1'
+    androidTestCompile "com.android.support.test.espresso:espresso-intents:$rootProject.ext.espressoVersion"
 }
 
-ext {
-    // App dependencies
-    supportLibraryVersion = '23.4.0'
-    guavaVersion = '18.0'
-    glideVersion = '3.6.1'
-    junitVersion = '4.12'
-    mockitoVersion = '1.10.19'
-    powerMockito = '1.6.2'
-    hamcrestVersion = '1.3'
-    runnerVersion = '0.5'
-    rulesVersion = '0.5'
-    espressoVersion = '2.2.2'
-}
+apply plugin: 'com.google.gms.google-services'
